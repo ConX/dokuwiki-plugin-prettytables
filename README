@@ -2,8 +2,7 @@ prettytables Plugin for DokuWiki
 
 Toolbar button that fixes the source code of a table by aligning the columns.
 
-All documentation for this plugin can be found at
-https://github.com/ConX/dokuwiki-plugin-prettytables/
+All documentation for this plugin can be found at https://www.dokuwiki.org/plugin:prettytables
 
 If you install this plugin manually, make sure it is installed in
 lib/plugins/prettytables/ - if the folder is called different it
