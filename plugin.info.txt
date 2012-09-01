@@ -1,0 +1,7 @@
+base   prettytables
+author Constantinos Xanthopoulos
+email  conx@xanthopoulos.info
+date   2012-09-01
+name   prettytables plugin
+desc   Toolbar button that fixes the source code of a table by aligning the columns.
+url    https://github.com/ConX/dokuwiki-plugin-prettytables/
