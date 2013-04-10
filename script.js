@@ -32,15 +32,16 @@ function prettytables_strcenter (text, width) {
 /** Table representation object.
  * @author Constantinos Xanthopoulos <conx@xanthopoulos.info>
 **/
-var prettytable = {
-	table: [],
-	map:  [],
+function prettytable()
+{
+	this.table =  [];
+	this.map = [];
 
 	/**
 	 * Table parser function
 	 *
 	 **/
-	parse: function(text){
+	this.parse =  function(text){
 		this.map = [];
 		this.table = [];
 		
@@ -76,38 +77,38 @@ var prettytable = {
 			}            
 		}
 		return(this);
-	},
+	};
 
 	/**
 	 * Helper function that replaces certain non table uses of
 	 * the ^ and | symbols.
 	 * @author Constantinos Xanthopoulos <conx@xanthopoulos.info>
 	 **/
-	encode: function(line){
+	this.encode =  function(line){
 		line = line.replace(/[%]{2}[|][%]{2}/g, "%%!@#1#@!%%");
 		line = line.replace(/[%]{2}[^][%]{2}/g, "%%!@#2#@!%%");
 		line = line.replace(/([\[]{2}[^\]]*)[|]([^\]]*[\]]{2})/g, "$1!@#1#@!$2");
 		return line
-	},
+	};
 
 	/** Invert the replacements made by encode.
 	 * @author Constantinos Xanthopoulos <conx@xanthopoulos.info>
 	 *
 	 **/
-	decode: function(){
+	this.decode =  function(){
 		for (var i=0;i<this.table.length;i++){
 			for (var j=0;j<this.table[i].length;j++){
 				t = this.table[i][j].replace(/[!][@][#][1][#][@][!]/g,"|");
 				this.table[i][j] = t.replace(/[!][@][#][2][#][@][!]/g,"^");
 			}
 		}
-	},
+	};
 
 	/**
 	 * Generate formated table
 	 * @author ConX <conx@xanthopoulos.info>
          **/
-	generate: function(){
+	this.generate =  function(){
 		var r = "";
 		var colsize = new Array(this.table[0].length);
 		this.decode();
@@ -137,7 +138,7 @@ var prettytable = {
 
 		}
 		return r;
-	}
+	};
 };
 
 
@@ -152,7 +153,8 @@ function addBtnActionPrettytables($btn, props, edid, id){
 			if(selection.getLength()){
 				var sample = fixtxt(selection.getText());
 				opts = {nosel: true};
-				pt = Object.create(prettytable).parse(sample);
+				var pt = new prettytable();
+				pt.parse(sample);
 				if (pt !== null){
 					pasteText(selection,pt.generate(),opts);
 				}
