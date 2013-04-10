@@ -10,22 +10,35 @@ function prettytables_repeat(text,num) {
 	return buf;
 }
 
+// this function counts the spaces in front and behind a given text, returning an array with these two counts
+function prettytables_count_spaces(text) {
+  var a=0, b=0, leading=true;
+  for (var i=0; i < text.length; i++) {
+    if (text.substr(i,1)==' ') a++; else break;
+  }
+  for (var i=text.length-1; i >= 0; i--) {
+    if (text.substr(i,1)==' ') b++; else break;
+  }
+  return [a,b];
+}
+
+
 /**
  * String manipulation function similar to 
  * Ruby's and pythons "center" build in functions.
  * @author szsk (http://snipplr.com/users/szsk/)
  **/
 function prettytables_strcenter (text, width) {
-	padding = " ";
-	if( text.length < width ) { 
-		var len = width - text.length;
-		var remain = ( len % 2 === 0 ) ? "" : padding;
-		var pads = prettytables_repeat(padding, parseInt(len / 2, 10));
-		return pads + text + pads + remain;
-	}   
-	else{
-		return text;
-	}
+     padding = " ";
+     if( text.length < width ) { 
+          var len = width - text.length;
+          var remain = ( len % 2 === 0 ) ? "" : padding;
+          var pads = prettytables_repeat(padding, parseInt(len / 2, 10));
+          return pads + text + pads + remain;
+     }   
+     else{
+          return text;
+     }
 }
 
 
@@ -34,6 +47,7 @@ function prettytables_strcenter (text, width) {
 **/
 function prettytable()
 {
+	this.orig_table = [];
 	this.table =  [];
 	this.map = [];
 
@@ -42,9 +56,10 @@ function prettytable()
 	 *
 	 **/
 	this.parse =  function(text){
+		this.orig_table = [];
 		this.map = [];
 		this.table = [];
-		
+
 		var lines =  text.split(/\n/);
 		for (var i=0;i<lines.length;i++){
 			if (lines[i] !== ""){
@@ -65,10 +80,24 @@ function prettytable()
 							s = s.replace(/[ ]+$/,"");
 							c.push(s);
 						}
-						
 					}
 					this.map.push(mr);
 					this.table.push(c);    
+					// original headings without trimming (for alignment)
+					t = this.encode(lines[i]);
+					c = [];
+					while (t.length != '0'){
+						s = t.match(/^[\^|]+/);
+						t = t.substr(s[0].length);
+						t  = t.replace(/^[\n]+/,"");
+						if (t.length != 0){
+							s = t.match(/^([^|\^]*)[\^|]/);
+							t = t.substr(s[1].length);
+							s = s[1];
+							c.push(s);
+						}
+					}
+					this.orig_table.push(c); 
 				}
 				else{
 					alert("Not a table");
@@ -124,10 +153,20 @@ function prettytable()
 			}
 		}
 
+		console.log("1");
+		var spaces=[];
 		for (i=0;i<this.table.length;i++){
 			for (j=0;j<this.table[i].length;j++){
 				r = r + this.map[i][j];
-				r = r + prettytables_strcenter(this.table[i][j],colsize[j]+4);
+
+		console.log("2");
+				// left, right or center align?
+				spaces = prettytables_count_spaces(this.orig_table[i][j]);
+				if (spaces[0] >  1 && spaces[1] >  1) r = r + prettytables_strcenter(this.table[i][j],colsize[j]+4); // center
+				if (spaces[0] >  1 && spaces[1] <= 1) r = r + prettytables_repeat(' ',colsize[j]-this.table[i][j].length+3) + this.table[i][j] + ' '; // right
+				if (spaces[0] <= 1) r = r + ' ' + this.table[i][j] + prettytables_repeat(' ',colsize[j]-this.table[i][j].length+3); // left
+		console.log("3");
+
 			}
 			if (i < this.table.length-1){
 				r = r + this.map[i][j] +"\n";
