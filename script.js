@@ -153,20 +153,16 @@ function prettytable()
 			}
 		}
 
-		console.log("1");
 		var spaces=[];
 		for (i=0;i<this.table.length;i++){
 			for (j=0;j<this.table[i].length;j++){
 				r = r + this.map[i][j];
 
-		console.log("2");
 				// left, right or center align?
 				spaces = prettytables_count_spaces(this.orig_table[i][j]);
 				if (spaces[0] >  1 && spaces[1] >  1) r = r + prettytables_strcenter(this.table[i][j],colsize[j]+4); // center
 				if (spaces[0] >  1 && spaces[1] <= 1) r = r + prettytables_repeat(' ',colsize[j]-this.table[i][j].length+3) + this.table[i][j] + ' '; // right
 				if (spaces[0] <= 1) r = r + ' ' + this.table[i][j] + prettytables_repeat(' ',colsize[j]-this.table[i][j].length+3); // left
-		console.log("3");
-
 			}
 			if (i < this.table.length-1){
 				r = r + this.map[i][j] +"\n";
