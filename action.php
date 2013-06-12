@@ -25,7 +25,7 @@ class action_plugin_prettytables extends DokuWiki_Action_Plugin {
     public function insert_button(Doku_Event &$event, $param) {
     	$event->data[] = array (
         	'type' => 'prettytables',
-                'title' => 'Fix table syntax',
+                'title' => $this->getLang('fix_table_syntax'),
                 'icon' => '../../plugins/prettytables/plugin.png',
                 );
     }

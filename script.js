@@ -113,7 +113,7 @@ function prettytable()
 					this.orig_table.push(c); 
 				}
 				else{
-					alert("Not a table");
+					alert(LANG.plugins.prettytables.not_a_table);
 					return(null);
 				}
 			}            
@@ -208,7 +208,7 @@ function addBtnActionPrettytables($btn, props, edid, id){
 				}
 			}
 			else{
-				alert("No selection");
+				alert(LANG.plugins.prettytables.no_selection);
 			}
 
 		});
