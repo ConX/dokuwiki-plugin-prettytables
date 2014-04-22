@@ -3,6 +3,18 @@
  * Ruby's and pythons "prettytables_repeat" build in functions.
  * @author szsk (http://snipplr.com/users/szsk/)
  **/
+function getCharWidth(str){
+    var bytesCount = 0;
+    for (var i = 0; i < str.length; i++) {
+        var c = str.charAt(i);
+        if (/^[\u0000-\u00ff]$/.test(c)) {  //match ascii
+            bytesCount += 1;
+        } else { // assume all other chars has 2 ascii char width 
+            bytesCount += 2;
+        }
+    }
+    return bytesCount;
+}
 function prettytables_repeat(text,num) {
 	for( var i = 0, buf = ""; i < num; i++ ){
 		buf += text;
@@ -29,9 +41,10 @@ function prettytables_count_spaces(text) {
  * @author szsk (http://snipplr.com/users/szsk/)
  **/
 function prettytables_strcenter (text, width) {
-     padding = " ";
-     if( text.length < width ) { 
-          var len = width - text.length;
+     var txt_len = getCharWidth(text);
+     var padding = " ";
+     if( txt_len < width ) { 
+          var len = width - txt_len;
           var remain = ( len % 2 === 0 ) ? "" : padding;
           var pads = prettytables_repeat(padding, parseInt(len / 2, 10));
           return pads + text + pads + remain;
@@ -100,7 +113,7 @@ function prettytable()
 					this.orig_table.push(c); 
 				}
 				else{
-					alert("Not a table");
+					alert(LANG.plugins.prettytables.not_a_table);
 					return(null);
 				}
 			}            
@@ -147,8 +160,8 @@ function prettytable()
 
 		for (i=0;i<this.table.length;i++){
 			for (j=0;j<this.table[i].length;j++){
-				if (this.table[i][j].length > colsize[j]){
-					colsize[j] = this.table[i][j].length;    
+				if (getCharWidth(this.table[i][j]) > colsize[j]){
+					colsize[j] = getCharWidth(this.table[i][j]);    
 				}
 			}
 		}
@@ -161,8 +174,8 @@ function prettytable()
 				// left, right or center align?
 				spaces = prettytables_count_spaces(this.orig_table[i][j]);
 				if (spaces[0] >  1 && spaces[1] >  1) r = r + prettytables_strcenter(this.table[i][j],colsize[j]+4); // center
-				if (spaces[0] >  1 && spaces[1] <= 1) r = r + prettytables_repeat(' ',colsize[j]-this.table[i][j].length+3) + this.table[i][j] + ' '; // right
-				if (spaces[0] <= 1) r = r + ' ' + this.table[i][j] + prettytables_repeat(' ',colsize[j]-this.table[i][j].length+3); // left
+				if (spaces[0] >  1 && spaces[1] <= 1) r = r + prettytables_repeat(' ',colsize[j]-getCharWidth(this.table[i][j])+3) + this.table[i][j] + ' '; // right
+				if (spaces[0] <= 1) r = r + ' ' + this.table[i][j] + prettytables_repeat(' ',colsize[j]-getCharWidth(this.table[i][j])+3); // left
 			}
 			if (i < this.table.length-1){
 				r = r + this.map[i][j] +"\n";
@@ -195,7 +208,7 @@ function addBtnActionPrettytables($btn, props, edid, id){
 				}
 			}
 			else{
-				alert("No selection");
+				alert(LANG.plugins.prettytables.no_selection);
 			}
 
 		});
