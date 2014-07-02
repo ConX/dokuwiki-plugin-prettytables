@@ -197,7 +197,7 @@ function prettytable()
  */
 function addBtnActionPrettytables($btn, props, edid, id){
 	$btn.click(function(){
-			var selection = getSelection(jQuery('#'+edid)[0]);
+			var selection = DWgetSelection(jQuery('#'+edid)[0]);
 			if(selection.getLength()){
 				var sample = fixtxt(selection.getText());
 				opts = {nosel: true};
