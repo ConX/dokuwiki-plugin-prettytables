@@ -130,6 +130,7 @@ function prettytable()
 		line = line.replace(/[%]{2}[|][%]{2}/g, "%%!@#1#@!%%");
 		line = line.replace(/[%]{2}[^][%]{2}/g, "%%!@#2#@!%%");
 		line = line.replace(/([\[]{2}[^\]]*)[|]([^\]]*[\]]{2})/g, "$1!@#1#@!$2");
+		line = line.replace(/([\{]{2}[^\}]*)[|]([^\}]*[\}]{2})/g, "$1!@#1#@!$2");
 		return line
 	};
 
